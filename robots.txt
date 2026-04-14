@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mirofish.ai/sitemap.xml
+Sitemap: https://mirofish.work/sitemap.xml
