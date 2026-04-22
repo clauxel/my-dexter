@@ -3,16 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#eef6ff" />
   <title>MiroFish — AI Swarm Intelligence Prediction Engine | Predict Anything</title>
   <meta name="description" content="MiroFish is a next-generation AI prediction engine powered by multi-agent swarm intelligence. Upload seed data, simulate thousands of AI agents, and get detailed prediction reports — all in a natural language chat interface." />
   <meta name="keywords" content="AI prediction engine, swarm intelligence, multi-agent simulation, scenario prediction, public opinion analysis, financial forecasting, social simulation, GraphRAG, future prediction, AI analytics" />
-  <link rel="canonical" href="https://mirofish.ai/" />
+  <link rel="canonical" href="https://mirofish.work/" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="MiroFish — Predict Anything with Swarm Intelligence" />
   <meta property="og:description" content="Next-generation AI prediction engine. Upload seed data, let thousands of agents simulate the future, get detailed prediction reports instantly." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mirofish.ai/" />
+  <meta property="og:url" content="https://mirofish.work/" />
   <meta property="og:site_name" content="MiroFish" />
   <meta property="og:locale" content="en_US" />
 
@@ -33,13 +35,13 @@
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        "@id": "https://mirofish.ai/#software",
+        "@id": "https://mirofish.work/#software",
         "name": "MiroFish",
         "applicationCategory": "BusinessApplication",
         "applicationSubCategory": "AI Prediction",
         "operatingSystem": "Web",
         "description": "A Simple and Universal Swarm Intelligence Engine, Predicting Anything. Next-generation AI prediction engine powered by multi-agent technology that constructs high-fidelity parallel digital worlds.",
-        "url": "https://mirofish.ai/",
+        "url": "https://mirofish.work/",
         "offers": [
           {
             "@type": "Offer",
@@ -66,7 +68,6 @@
           "Interactive report generation",
           "Zero-risk decision rehearsal"
         ],
-        "screenshot": "https://mirofish.ai/og-image.png",
         "sameAs": [
           "https://github.com/666ghj/MiroFish",
           "https://x.com/mirofish_ai",
@@ -75,7 +76,7 @@
       },
       {
         "@type": "FAQPage",
-        "@id": "https://mirofish.ai/#faq",
+        "@id": "https://mirofish.work/#faq",
         "mainEntity": [
           {
             "@type": "Question",
@@ -1081,7 +1082,7 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-columns: 1.4fr 0.9fr 1fr 1fr 1fr;
       gap: 48px;
       margin-bottom: 48px;
       max-width: 1200px;
@@ -1167,6 +1168,121 @@
     .footer-bottom-links a:hover { color: rgba(184,212,236,0.8); }
 
     /* ===========================
+       Guide Pages Section
+    =========================== */
+    .guides-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .guide-card {
+      min-height: 178px;
+      background: white;
+      border: 1px solid rgba(30, 136, 229, 0.12);
+      border-radius: var(--radius-sm);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+    }
+    .guide-card:hover {
+      box-shadow: var(--shadow-deep);
+      transform: translateY(-3px);
+      border-color: rgba(0, 180, 168, 0.35);
+      text-decoration: none;
+    }
+
+    .guide-card-title {
+      display: block;
+      font-size: 1rem;
+      font-weight: 750;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .guide-card-desc {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.87rem;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .guide-card-link {
+      color: var(--blue-primary);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    /* ===========================
+       Ecosystem Section
+    =========================== */
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .ecosystem-card {
+      background: white;
+      border: 1px solid rgba(30, 136, 229, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 28px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.3s;
+    }
+    .ecosystem-card:hover {
+      box-shadow: var(--shadow-deep);
+      transform: translateY(-3px);
+      border-color: rgba(30, 136, 229, 0.25);
+    }
+
+    .ecosystem-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(30,136,229,0.12), rgba(0,180,168,0.12));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .ecosystem-card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 4px;
+    }
+
+    .ecosystem-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .ecosystem-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--blue-primary);
+      margin-top: 6px;
+      transition: gap 0.2s;
+    }
+    .ecosystem-card-link:hover { gap: 9px; }
+
+    @media (max-width: 768px) {
+      .ecosystem-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===========================
        Scroll Animations
     =========================== */
     .fade-up {
@@ -1190,6 +1306,7 @@
       .features-grid { grid-template-columns: repeat(2, 1fr); }
       .workflow-steps { grid-template-columns: repeat(3, 1fr); gap: 24px; }
       .workflow-steps::before { display: none; }
+      .guides-grid { grid-template-columns: repeat(2, 1fr); }
       .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
       .pricing-card.featured { transform: none; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -1203,6 +1320,7 @@
       .features-grid { grid-template-columns: 1fr; }
       .usecases-grid { grid-template-columns: 1fr; }
       .workflow-steps { grid-template-columns: 1fr; }
+      .guides-grid { grid-template-columns: 1fr; }
       .stats-bar { gap: 28px; padding: 20px; }
       .stat-divider { display: none; }
       .hero-actions { flex-wrap: wrap; }
@@ -1279,6 +1397,7 @@
       <a href="#features">Features</a>
       <a href="#workflow">How It Works</a>
       <a href="#use-cases">Use Cases</a>
+      <a href="#guides">Guides</a>
       <a href="#pricing">Pricing</a>
       <a href="https://github.com/666ghj/MiroFish" target="_blank" rel="noopener">GitHub</a>
       <a href="#faq">Docs</a>
@@ -1597,6 +1716,83 @@
       </div>
     </section>
 
+    <!-- ===================== GUIDES ===================== -->
+    <section id="guides" class="section section-alt" aria-labelledby="guides-heading">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div class="section-label">Guides</div>
+          <h2 class="section-title" id="guides-heading">Choose your next step</h2>
+          <p class="section-desc">Practical paths for understanding MiroFish, running your first simulation, and evaluating self-hosted use.</p>
+        </div>
+
+        <div class="guides-grid">
+          <a class="guide-card fade-up" href="/mirofish-ai/">
+            <span>
+              <span class="guide-card-title">MiroFish AI</span>
+              <span class="guide-card-desc">What the AI prediction engine does and where multi-agent simulation fits.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-1" href="/mirofish-english/">
+            <span>
+              <span class="guide-card-title">MiroFish English</span>
+              <span class="guide-card-desc">English overview, setup path, and practical resources for new users.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-2" href="/mirofish-trading/">
+            <span>
+              <span class="guide-card-title">MiroFish trading</span>
+              <span class="guide-card-desc">Trading research, market narratives, sentiment shifts, and risk rehearsal.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up" href="/mirofish-how-to-use/">
+            <span>
+              <span class="guide-card-title">MiroFish how to use</span>
+              <span class="guide-card-desc">Step-by-step first run: seed, graph, simulation, report, and follow-up.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-1" href="/mirofish-offline/">
+            <span>
+              <span class="guide-card-title">MiroFish-Offline</span>
+              <span class="guide-card-desc">Self-hosting, private deployment, and what fully offline really requires.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-2" href="/mirofish-github/">
+            <span>
+              <span class="guide-card-title">MiroFish GitHub</span>
+              <span class="guide-card-desc">Repository link, source checks, license signals, and install expectations.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up" href="/mirofish-founder/">
+            <span>
+              <span class="guide-card-title">MiroFish founder</span>
+              <span class="guide-card-desc">How to verify founder, maintainer, company, and repository attribution.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-1" href="/mirofish-polymarket/">
+            <span>
+              <span class="guide-card-title">MiroFish Polymarket</span>
+              <span class="guide-card-desc">Prediction-market narrative research and Polymarket-style scenario analysis.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- ===================== PRICING ===================== -->
     <section id="pricing" class="section" aria-labelledby="pricing-heading">
       <div class="container">
@@ -1830,6 +2026,49 @@
         </div>
       </div>
     </section>
+
+    <!-- ===================== ECOSYSTEM ===================== -->
+    <section class="section section-alt" aria-labelledby="ecosystem-heading">
+      <div class="container">
+        <div class="section-header section-header-center">
+          <div class="section-label">From the Same Team</div>
+          <h2 class="section-title" id="ecosystem-heading">Also built for AI builders</h2>
+          <p class="section-desc">MiroFish is part of a growing ecosystem of agent-first tools for researchers, operators, and product builders.</p>
+        </div>
+
+        <div class="ecosystem-grid">
+          <div class="ecosystem-card fade-up">
+            <div class="ecosystem-card-icon">🚀</div>
+            <div class="ecosystem-card-name">OpenClaw</div>
+            <p class="ecosystem-card-desc">OpenClaw Launch — One-click OpenClaw deployment. Go from zero to production in minutes without DevOps complexity.</p>
+            <a href="https://www.aigeamy.com/" target="_blank" rel="noopener" class="ecosystem-card-link">
+              aigeamy.com
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+          <div class="ecosystem-card fade-up fade-up-delay-1">
+            <div class="ecosystem-card-icon">🧠</div>
+            <div class="ecosystem-card-name">Hermes Agent</div>
+            <p class="ecosystem-card-desc">Not a Chat. A Persistent Agent That Remembers, Acts, and Improves. Built for workflows that never stop.</p>
+            <a href="https://hermesagent.studio/" target="_blank" rel="noopener" class="ecosystem-card-link">
+              hermesagent.studio
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+          <div class="ecosystem-card fade-up fade-up-delay-2">
+            <div class="ecosystem-card-icon">🤝</div>
+            <div class="ecosystem-card-name">Multica</div>
+            <p class="ecosystem-card-desc">Multica — Multi-Agent Collaboration for Real Workflows. Orchestrate teams of specialized agents to tackle complex, long-running tasks.</p>
+            <a href="https://www.multica.uk/" target="_blank" rel="noopener" class="ecosystem-card-link">
+              multica.uk
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H4M11 1v7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- ===================== FOOTER ===================== -->
@@ -1892,6 +2131,20 @@
           <li><a href="https://github.com/666ghj/MiroFish/releases" target="_blank" rel="noopener">Releases</a></li>
           <li><a href="https://deepwiki.com/666ghj/MiroFish" target="_blank" rel="noopener">DeepWiki</a></li>
           <li><a href="https://github.com/666ghj/MiroFish/issues" target="_blank" rel="noopener">Issues</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Guides</div>
+        <ul class="footer-links">
+          <li><a href="/mirofish-ai/">MiroFish AI</a></li>
+          <li><a href="/mirofish-english/">MiroFish English</a></li>
+          <li><a href="/mirofish-trading/">MiroFish trading</a></li>
+          <li><a href="/mirofish-how-to-use/">MiroFish how to use</a></li>
+          <li><a href="/mirofish-offline/">MiroFish-Offline</a></li>
+          <li><a href="/mirofish-github/">MiroFish GitHub</a></li>
+          <li><a href="/mirofish-founder/">MiroFish founder</a></li>
+          <li><a href="/mirofish-polymarket/">MiroFish Polymarket</a></li>
         </ul>
       </div>
 
