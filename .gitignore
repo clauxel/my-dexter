@@ -1,2 +1,6 @@
 server-*.log
 server-*.err.log
+node_modules/
+data/
+.env.*
+*.tsbuildinfo
