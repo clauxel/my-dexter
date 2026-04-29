@@ -207,12 +207,27 @@ function resolveStage(event) {
   if (event.eventName === 'page_view' && event.routePath === '/') return 'landing_viewed'
   if (event.eventName === 'content_view' && event.sectionKey === 'pricing') return 'pricing_viewed'
   if (event.eventName === 'cta_click') return 'launch_clicked'
+  if (event.eventName === 'launch_clicked') return 'launch_clicked'
+  if (event.eventName === 'plan_selected') return 'plan_selected'
+  if (event.eventName === 'checkout_started') return 'checkout_started'
+  if (event.eventName === 'checkout_redirected') return 'checkout_redirected'
+  if (event.eventName === 'payment_completed') return 'payment_completed'
   if (event.routePath.startsWith('/demo') || event.routePath.startsWith('/app')) return 'console_viewed'
   return 'unknown'
 }
 
 function pickHigherStage(currentStage, nextStage) {
-  const order = ['unknown', 'landing_viewed', 'pricing_viewed', 'launch_clicked', 'checkout_started', 'payment_completed', 'console_viewed']
+  const order = [
+    'unknown',
+    'landing_viewed',
+    'pricing_viewed',
+    'launch_clicked',
+    'plan_selected',
+    'checkout_started',
+    'checkout_redirected',
+    'payment_completed',
+    'console_viewed',
+  ]
   return order.indexOf(nextStage) > order.indexOf(currentStage) ? nextStage : currentStage
 }
 
