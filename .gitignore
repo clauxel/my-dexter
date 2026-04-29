@@ -1,6 +1,7 @@
 server-*.log
 server-*.err.log
 *-dev-server*.log
+mirofish-dev-*.log
 node_modules/
 data/
 .env.*
