@@ -1871,7 +1871,7 @@
 <body>
 
   <!-- ===================== NAVIGATION ===================== -->
-  <nav class="nav" role="navigation" aria-label="Main navigation">
+  <nav class="nav" role="navigation" aria-label="Main navigation" data-analytics-section="nav">
     <a href="/" class="nav-logo">
       <!-- Tech Fish SVG Logo -->
       <svg viewBox="0 0 80 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="MiroFish logo">
@@ -1942,7 +1942,7 @@
 
     <div class="nav-cta">
       <button class="btn-ghost" onclick="window.location='#pricing'">Sign In</button>
-      <a href="#pricing" class="btn-primary" data-pricing-jump data-pricing-source="nav_cta" data-pricing-plan-target="starter" data-analytics-click="start_now" data-analytics-cta="true">
+      <a href="#pricing" class="btn-primary" data-launch-open data-launch-source="nav_cta" data-launch-plan="starter" data-launch-billing="annual" data-analytics-click="start_now" data-analytics-cta="true">
         Start Now
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -1951,7 +1951,7 @@
 
   <!-- ===================== HERO ===================== -->
   <main>
-    <section class="hero" aria-labelledby="hero-heading">
+    <section class="hero" aria-labelledby="hero-heading" data-analytics-section="hero">
       <div class="hero-left">
         <div class="hero-tags">
           <span class="tag tag-primary">⚙ MiroFish Prediction Engine</span>
@@ -1982,7 +1982,7 @@
             Example: If a product raises its price next quarter, how will customer sentiment and narrative spread change?
           </p>
           <div class="hero-actions">
-            <a href="#pricing" class="btn-start" data-pricing-jump data-pricing-source="hero_cta" data-pricing-plan-target="pro" data-pricing-billing="annual" data-analytics-click="start_simulation" data-analytics-cta="true">
+            <a href="#pricing" class="btn-start" data-launch-open data-launch-source="hero_cta" data-launch-plan="pro" data-launch-billing="annual" data-analytics-click="start_simulation" data-analytics-cta="true">
               Start Simulation
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
@@ -2259,7 +2259,7 @@
         <div class="section-header section-header-center">
           <div class="section-label">Guides</div>
           <h2 class="section-title" id="guides-heading">Choose your next step</h2>
-          <p class="section-desc">Practical paths for understanding MiroFish, running your first simulation, and evaluating self-hosted use.</p>
+          <p class="section-desc">Practical paths for understanding MiroFish, running your first simulation, evaluating self-hosted use, and browsing related reference resources.</p>
         </div>
 
         <div class="guides-grid">
@@ -2326,12 +2326,44 @@
             </span>
             <span class="guide-card-link">Open guide -></span>
           </a>
+
+          <a class="guide-card fade-up fade-up-delay-2" href="/microfiche-library/">
+            <span>
+              <span class="guide-card-title">Microfiche library</span>
+              <span class="guide-card-desc">How library microfiche collections work, what machines you need, and how to request scans.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up" href="/is-microfiche-still-used-today/">
+            <span>
+              <span class="guide-card-title">Is microfiche still used today</span>
+              <span class="guide-card-desc">Where microfiche still matters in archives, local history, genealogy, and records access.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-1" href="/microfiche-definition/">
+            <span>
+              <span class="guide-card-title">Microfiche definition</span>
+              <span class="guide-card-desc">A clear definition of microfiche, what the term means, and how the format is used.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
+
+          <a class="guide-card fade-up fade-up-delay-2" href="/difference-between-microfiche-and-microfilm/">
+            <span>
+              <span class="guide-card-title">Microfiche vs microfilm</span>
+              <span class="guide-card-desc">The simplest side-by-side explanation of sheets, reels, storage, and reader differences.</span>
+            </span>
+            <span class="guide-card-link">Open guide -></span>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- ===================== PRICING ===================== -->
-    <section id="pricing" class="section pricing-section" aria-labelledby="pricing-heading">
+    <section id="pricing" class="section pricing-section" aria-labelledby="pricing-heading" data-analytics-section="pricing">
       <div class="container">
         <div class="section-header section-header-center">
           <div class="section-label">Pricing</div>
@@ -2391,7 +2423,7 @@
                 Priority processing
               </li>
             </ul>
-            <button type="button" class="btn-pricing btn-pricing-outline" data-pricing-action="starter">Start Starter</button>
+            <button type="button" class="btn-pricing btn-pricing-outline" data-pricing-action="starter">Continue with Starter</button>
           </div>
 
           <!-- Pro -->
@@ -2435,7 +2467,7 @@
                 Custom deployment
               </li>
             </ul>
-            <button type="button" class="btn-pricing btn-pricing-filled" data-pricing-action="pro">Start Pro Trial</button>
+            <button type="button" class="btn-pricing btn-pricing-filled" data-pricing-action="pro">Continue with Pro</button>
           </div>
 
           <!-- Enterprise -->
@@ -2478,7 +2510,7 @@
                 SLA & compliance support
               </li>
             </ul>
-            <button type="button" class="btn-pricing btn-pricing-outline" data-pricing-action="enterprise">Start Enterprise</button>
+            <button type="button" class="btn-pricing btn-pricing-outline" data-pricing-action="enterprise">Continue with Enterprise</button>
           </div>
         </div>
       </div>
@@ -2557,7 +2589,7 @@
     </section>
 
     <!-- ===================== CTA ===================== -->
-    <section class="cta-section" aria-labelledby="cta-heading">
+    <section class="cta-section" aria-labelledby="cta-heading" data-analytics-section="cta">
       <div class="cta-glow" aria-hidden="true"></div>
       <div class="container" style="position:relative;z-index:1;">
         <div class="section-label" style="color:var(--blue-electric);">Get Started Today</div>
@@ -2568,7 +2600,7 @@
           Join researchers, analysts, and strategists who use MiroFish to simulate outcomes before they commit. Pick a plan and continue on the MiroFish checkout page.
         </p>
         <div class="cta-buttons">
-          <a href="#pricing" class="btn-cta-primary" data-pricing-jump data-pricing-source="bottom_cta" data-pricing-plan-target="starter" data-analytics-click="start_starter_simulation" data-analytics-cta="true">
+          <a href="#pricing" class="btn-cta-primary" data-launch-open data-launch-source="bottom_cta" data-launch-plan="starter" data-launch-billing="annual" data-analytics-click="start_starter_simulation" data-analytics-cta="true">
             Start $9 Simulation
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
@@ -2698,6 +2730,10 @@
           <li><a href="/mirofish-github/">MiroFish GitHub</a></li>
           <li><a href="/mirofish-founder/">MiroFish founder</a></li>
           <li><a href="/mirofish-polymarket/">MiroFish Polymarket</a></li>
+          <li><a href="/microfiche-library/">Microfiche library</a></li>
+          <li><a href="/is-microfiche-still-used-today/">Is microfiche still used today</a></li>
+          <li><a href="/microfiche-definition/">Microfiche definition</a></li>
+          <li><a href="/difference-between-microfiche-and-microfilm/">Microfiche vs microfilm</a></li>
         </ul>
       </div>
 
