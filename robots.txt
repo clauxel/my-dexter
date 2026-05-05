@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://mirofish.work/sitemap.xml
+Sitemap: https://dexter.mom/sitemap.xml

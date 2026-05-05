@@ -1,15 +1,18 @@
 {
-  "name": "mirofish-site",
+  "name": "dexter-site",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "node dev-server.mjs",
-    "prod:inspect": "node scripts/inspect-production-analytics.mjs --local-db --skip-health",
-    "prod:inspect:remote": "node scripts/inspect-production-analytics.mjs"
+    "build:worker": "echo worker ready",
+    "cloudflare:worker:deploy": "npx wrangler deploy --keep-vars"
   },
   "dependencies": {
     "pg": "^8.20.0",
     "ssh2": "^1.17.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.17"
   }
 }

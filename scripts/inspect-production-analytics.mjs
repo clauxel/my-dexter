@@ -786,7 +786,7 @@ SELECT json_build_object(
         FROM analytics_events e
         JOIN since_value sv ON TRUE
         WHERE e.occurred_at::timestamptz >= sv.since
-          AND e.event_name IN ('launch_clicked', 'cta_click')
+          AND e.event_name = 'launch_clicked'
       ), 0),
       'planSelected', COALESCE((
         SELECT COUNT(DISTINCT e.session_id)

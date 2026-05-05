@@ -1,8 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "env": {
-    "APP_ORIGIN": "https://mirofish.work",
-    "CREEM_DEFAULT_SUCCESS_URL": "https://mirofish.work/",
-    "CREEM_ENV": "live"
-  }
-}
