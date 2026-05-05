@@ -83,6 +83,11 @@ const server = createServer(async (request, response) => {
       return
     }
 
+    if (url.pathname === '/api/analytics/events') {
+      sendText(response, 202, JSON.stringify({ accepted: true }), 'application/json; charset=utf-8')
+      return
+    }
+
     await serveStatic(request, response, url)
   } catch (error) {
     console.error(error)
@@ -95,5 +100,5 @@ const server = createServer(async (request, response) => {
 })
 
 server.listen(port, host, () => {
-  console.log(`MiroFish dev server running at http://${host}:${port}/`)
+  console.log(`Dexter AI dev server running at http://${host}:${port}/`)
 })

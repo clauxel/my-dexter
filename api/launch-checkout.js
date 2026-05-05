@@ -6,8 +6,8 @@ import { loadLocalEnvironment } from '../server-lib/env-loader.mjs'
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 const bodyLimitBytes = 1024 * 1024
 const annualDiscountMultiplier = 0.5
-const creemProductCache = globalThis.__mirofishCreemProductCache ?? new Map()
-globalThis.__mirofishCreemProductCache = creemProductCache
+const creemProductCache = globalThis.__dexterCreemProductCache ?? new Map()
+globalThis.__dexterCreemProductCache = creemProductCache
 
 let checkoutEnvironmentLoaded = false
 
@@ -16,14 +16,14 @@ const planCatalog = {
     id: 'starter',
     name: 'Starter',
     currency: 'USD',
-    monthlyAmountCents: 900,
+    monthlyAmountCents: 1000,
     mode: 'checkout',
   },
   pro: {
     id: 'pro',
     name: 'Pro',
     currency: 'USD',
-    monthlyAmountCents: 2900,
+    monthlyAmountCents: 3000,
     annualDiscountMultiplier,
     mode: 'checkout',
   },
@@ -31,7 +31,7 @@ const planCatalog = {
     id: 'enterprise',
     name: 'Enterprise',
     currency: 'USD',
-    monthlyAmountCents: 5900,
+    monthlyAmountCents: 6000,
     mode: 'checkout',
   },
 }
@@ -291,8 +291,8 @@ function resolvePlanSelection(planSelectionId) {
 
 function getConfiguredCreemProductId(planSelection) {
   const keys = [
-    `CREEM_PRODUCT_ID_MIROFISH_${normalizeKey(planSelection.selectionId)}`,
-    `CREEM_PRODUCT_ID_MIROFISH_${normalizeKey(planSelection.planId)}`,
+    `CREEM_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.selectionId)}`,
+    `CREEM_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.planId)}`,
     `CREEM_PRODUCT_ID_${normalizeKey(planSelection.selectionId)}`,
     `CREEM_PRODUCT_ID_${normalizeKey(planSelection.planId)}`,
     'CREEM_PRODUCT_ID',
@@ -329,8 +329,8 @@ async function createCreemCheckout({ order, planSelection, source, request }) {
       method: 'POST',
       headers,
       body: {
-        name: `MiroFish ${planSelection.plan.name} ${planSelection.billingCycle === 'annual' ? 'Annual' : 'Monthly'}`,
-        description: `${planSelection.plan.name} plan for MiroFish hosted prediction workflows`,
+        name: `Dexter AI ${planSelection.plan.name} ${planSelection.billingCycle === 'annual' ? 'Annual' : 'Monthly'}`,
+        description: `${planSelection.plan.name} plan for Dexter AI hosted financial research workflows`,
         price: order.amountCents,
         currency: order.currency,
         billing_type: 'onetime',
@@ -397,7 +397,7 @@ export default async function handler(request, response) {
     const orderId = randomBytes(16).toString('hex')
     const order = {
       id: orderId,
-      orderNumber: `MF-${Date.now().toString(36).toUpperCase()}-${orderId.slice(0, 6).toUpperCase()}`,
+      orderNumber: `DX-${Date.now().toString(36).toUpperCase()}-${orderId.slice(0, 6).toUpperCase()}`,
       amountCents: planSelection.amountCents,
       amountLabel: planSelection.amountLabel,
       currency: planSelection.currency,

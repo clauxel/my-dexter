@@ -45,7 +45,7 @@ export function loadLocalEnvironment({
   projectRoot,
   runtimeMode = 'production',
   environment = process.env,
-  explicitEnvPath = environment.MIROFISH_ENV_PATH ?? '',
+  explicitEnvPath = environment.DEXTER_ENV_PATH ?? '',
 }) {
   const protectedKeys = new Set(Object.keys(environment))
   const automaticPath = String(runtimeMode).toLowerCase() === 'development'

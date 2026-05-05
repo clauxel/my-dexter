@@ -5,9 +5,9 @@
   const currency = 'USD'
 
   const planCatalog = {
-    starter:    { id: 'starter',    name: 'Starter',    monthlyAmountCents: 900,  annualDiscountMultiplier },
-    pro:        { id: 'pro',        name: 'Pro',         monthlyAmountCents: 2900, annualDiscountMultiplier },
-    enterprise: { id: 'enterprise', name: 'Enterprise',  monthlyAmountCents: 5900, annualDiscountMultiplier },
+    starter:    { id: 'starter',    name: 'Starter',    monthlyAmountCents: 1000, annualDiscountMultiplier },
+    pro:        { id: 'pro',        name: 'Pro',         monthlyAmountCents: 3000, annualDiscountMultiplier },
+    enterprise: { id: 'enterprise', name: 'Enterprise',  monthlyAmountCents: 6000, annualDiscountMultiplier },
   }
 
   const state = {
@@ -72,6 +72,8 @@
     var target = document.getElementById('modal-plan-' + planId)
     if (target) target.classList.add('selected')
     updateModalPrices()
+    var overlay = document.getElementById('launch-modal')
+    if (overlay && overlay.classList.contains('open')) track('plan_selected')
   }
 
   function selectBillingCycle(cycle) {
@@ -103,6 +105,7 @@
     overlay.classList.add('open')
     document.body.style.overflow = 'hidden'
     clearStatus()
+    track('launch_clicked', { openedFromPlanId: planId || defaultPlanId })
   }
 
   function closeModal() {
@@ -122,6 +125,20 @@
   function clearStatus() {
     var el = document.getElementById('modal-status')
     if (el) { el.className = 'modal-status'; el.textContent = '' }
+  }
+
+  function track(eventName, metadata) {
+    if (!window.DexterAnalytics || typeof window.DexterAnalytics.track !== 'function') return
+    window.DexterAnalytics.track({
+      eventType: 'conversion',
+      eventName: eventName,
+      sectionKey: 'checkout_modal',
+      elementKey: state.selectedPlanId + '_' + state.billingCycle,
+      metadata: Object.assign({
+        planId: state.selectedPlanId,
+        billingCycle: state.billingCycle,
+      }, metadata || {}),
+    })
   }
 
   function setCheckoutBtnEnabled(enabled) {
@@ -178,6 +195,7 @@
     state.requestInFlight = true
     setCheckoutBtnEnabled(false)
     showStatus('loading', 'Preparing secure checkout…')
+    track('checkout_started')
 
     try {
       var resp = await fetch('/api/launch-checkout', {
@@ -194,10 +212,12 @@
       clearStatus()
       var popup = openCenteredPopup(data.checkoutUrl)
       if (!popup || popup.closed) {
+        track('checkout_redirected', { fallback: 'current_tab' })
         window.location.href = data.checkoutUrl
         return
       }
       state.popup = popup
+      track('checkout_redirected', { fallback: 'popup' })
       monitorPopup(popup)
     } catch (err) {
       setCheckoutBtnEnabled(true)
@@ -210,6 +230,7 @@
   function handleCheckoutSuccess() {
     var params = new URLSearchParams(window.location.search)
     if (params.get('checkout') === 'success') {
+      track('payment_completed')
       history.replaceState({}, '', '/')
       setTimeout(function () {
         openModal('pro')

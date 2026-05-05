@@ -1,0 +1,12 @@
+node_modules/
+.git/
+.github/
+.wrangler/
+.assetsignore
+.pagesignore
+scripts/
+server-lib/
+api/
+*.log
+*.err.log
+package-lock.json

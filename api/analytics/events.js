@@ -25,7 +25,7 @@ function normalizeSslConfig(sslMode = '') {
 
 function buildPoolConfig(environment = process.env) {
   const rawUrl = firstDefined(
-    environment.MIROFISH_ANALYTICS_DATABASE_URL,
+    environment.DEXTER_ANALYTICS_DATABASE_URL,
     environment.DATABASE_URL,
     environment.POSTGRES_URL,
     environment.POSTGRES_PRISMA_URL,
@@ -44,22 +44,22 @@ function buildPoolConfig(environment = process.env) {
     }
   }
 
-  const host = firstDefined(environment.MIROFISH_ANALYTICS_DB_HOST, environment.PGHOST, environment.POSTGRES_HOST)
-  const database = firstDefined(environment.MIROFISH_ANALYTICS_DB_NAME, environment.PGDATABASE, environment.POSTGRES_DATABASE)
-  const user = firstDefined(environment.MIROFISH_ANALYTICS_DB_USER, environment.PGUSER, environment.POSTGRES_USER)
-  const password = firstDefined(environment.MIROFISH_ANALYTICS_DB_PASSWORD, environment.PGPASSWORD, environment.POSTGRES_PASSWORD)
+  const host = firstDefined(environment.DEXTER_ANALYTICS_DB_HOST, environment.PGHOST, environment.POSTGRES_HOST)
+  const database = firstDefined(environment.DEXTER_ANALYTICS_DB_NAME, environment.PGDATABASE, environment.POSTGRES_DATABASE)
+  const user = firstDefined(environment.DEXTER_ANALYTICS_DB_USER, environment.PGUSER, environment.POSTGRES_USER)
+  const password = firstDefined(environment.DEXTER_ANALYTICS_DB_PASSWORD, environment.PGPASSWORD, environment.POSTGRES_PASSWORD)
 
   if (!host || !database || !user || !password) {
-    throw new Error('MiroFish analytics database is not configured.')
+    throw new Error('Dexter AI analytics database is not configured.')
   }
 
   return {
     host,
-    port: Number.parseInt(firstDefined(environment.MIROFISH_ANALYTICS_DB_PORT, environment.PGPORT, environment.POSTGRES_PORT, '5432'), 10),
+    port: Number.parseInt(firstDefined(environment.DEXTER_ANALYTICS_DB_PORT, environment.PGPORT, environment.POSTGRES_PORT, '5432'), 10),
     database,
     user,
     password,
-    ssl: normalizeSslConfig(firstDefined(environment.MIROFISH_ANALYTICS_DB_SSLMODE, environment.PGSSLMODE, environment.POSTGRES_SSLMODE, 'require')),
+    ssl: normalizeSslConfig(firstDefined(environment.DEXTER_ANALYTICS_DB_SSLMODE, environment.PGSSLMODE, environment.POSTGRES_SSLMODE, 'require')),
   }
 }
 

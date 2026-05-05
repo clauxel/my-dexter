@@ -8,10 +8,10 @@ import { Client } from 'ssh2'
 import { loadLocalEnvironment } from '../server-lib/env-loader.mjs'
 
 const scriptProjectRoot = resolve(fileURLToPath(new URL('..', import.meta.url)))
-const defaultServiceName = 'mirofish.service'
-const defaultRemoteEnvFile = '/data/mirofish/mirofish.env'
+const defaultServiceName = 'dexter.service'
+const defaultRemoteEnvFile = '/data/dexter/dexter.env'
 const defaultDays = 30
-const defaultAnalyticsSecretPath = 'data/secrets/mirofish-analytics-db-password.dpapi'
+const defaultAnalyticsSecretPath = 'data/secrets/dexter-analytics-db-password.dpapi'
 const defaultAnalyticsDatabase = {
   project: 'neon-emerald-park',
   host: 'ep-damp-moon-an7f40eu-pooler.c-6.us-east-1.aws.neon.tech',
@@ -22,8 +22,8 @@ const defaultAnalyticsDatabase = {
   enableChannelBinding: true,
 }
 const knownKeyCandidates = [
-  '.ssh/mirofish_prod_key',
-  '.ssh/mirofishLaunch_prod_key',
+  '.ssh/dexter_prod_key',
+  '.ssh/dexterLaunch_prod_key',
   '.ssh/cw_ed25519',
   '.ssh/id_ed25519',
   '.ssh/id_rsa',
@@ -51,7 +51,7 @@ Options:
   --origin <url>             Public site origin to health-check
   --service <name>           Systemd service name. Default: ${defaultServiceName}
   --remote-env-file <path>   Remote env file path. Default: ${defaultRemoteEnvFile}
-  --local-db                 Query MiroFish Neon/local PostgreSQL from environment instead of SSH
+  --local-db                 Query Dexter AI Neon/local PostgreSQL from environment instead of SSH
   --secret-file <path>       DPAPI-encrypted password file. Default: ${defaultAnalyticsSecretPath}
   --ssh-host <host>          Override SSH host
   --ssh-port <port>          Override SSH port
@@ -200,7 +200,7 @@ function readDpapiSecretFile(filePath) {
 
   try {
     const script = [
-      '$raw = (Get-Content -Raw -LiteralPath $env:MIROFISH_ANALYTICS_SECRET_FILE).Trim()',
+      '$raw = (Get-Content -Raw -LiteralPath $env:DEXTER_ANALYTICS_SECRET_FILE).Trim()',
       '$secure = ConvertTo-SecureString $raw',
       "$credential = [pscredential]::new('secret', $secure)",
       '$credential.GetNetworkCredential().Password',
@@ -213,7 +213,7 @@ function readDpapiSecretFile(filePath) {
         encoding: 'utf8',
         env: {
           ...process.env,
-          MIROFISH_ANALYTICS_SECRET_FILE: filePath,
+          DEXTER_ANALYTICS_SECRET_FILE: filePath,
         },
         windowsHide: true,
       },
@@ -245,8 +245,8 @@ function resolvePublicOrigin(appOriginValue, overrideOrigin) {
 function normalizeSslConfig(environment, sslModeOverride = '') {
   const sslMode = firstDefined(
     sslModeOverride,
-    environment.MIROFISH_ANALYTICS_DB_SSLMODE,
-    environment.MIROFISH_POSTGRES_SSLMODE,
+    environment.DEXTER_ANALYTICS_DB_SSLMODE,
+    environment.DEXTER_POSTGRES_SSLMODE,
     environment.PGSSLMODE,
     environment.POSTGRES_SSLMODE,
   ).toLowerCase()
@@ -301,8 +301,8 @@ function resolveLocalPostgresConfig({
   secretFile = defaultAnalyticsSecretPath,
 } = {}) {
   const siteSpecificUrl = firstDefined(
-    environment.MIROFISH_ANALYTICS_DATABASE_URL,
-    environment.MIROFISH_POSTGRES_URL,
+    environment.DEXTER_ANALYTICS_DATABASE_URL,
+    environment.DEXTER_POSTGRES_URL,
   )
   if (siteSpecificUrl) {
     return parsePostgresConnectionUrl(siteSpecificUrl, environment)
@@ -315,28 +315,28 @@ function resolveLocalPostgresConfig({
     environment.POSTGRES_PRISMA_URL,
   )
   const siteSpecificDiscreteConfig = firstDefined(
-    environment.MIROFISH_ANALYTICS_DB_HOST,
-    environment.MIROFISH_ANALYTICS_DB_NAME,
-    environment.MIROFISH_ANALYTICS_DB_USER,
-    environment.MIROFISH_ANALYTICS_DB_PASSWORD,
-    environment.MIROFISH_ANALYTICS_DB_PORT,
+    environment.DEXTER_ANALYTICS_DB_HOST,
+    environment.DEXTER_ANALYTICS_DB_NAME,
+    environment.DEXTER_ANALYTICS_DB_USER,
+    environment.DEXTER_ANALYTICS_DB_PASSWORD,
+    environment.DEXTER_ANALYTICS_DB_PORT,
   )
   if (!dpapiPassword && !siteSpecificDiscreteConfig && genericUrl) {
     return parsePostgresConnectionUrl(genericUrl, environment)
   }
 
-  const host = firstDefined(environment.MIROFISH_ANALYTICS_DB_HOST, defaultAnalyticsDatabase.host)
-  const database = firstDefined(environment.MIROFISH_ANALYTICS_DB_NAME, defaultAnalyticsDatabase.database)
-  const user = firstDefined(environment.MIROFISH_ANALYTICS_DB_USER, defaultAnalyticsDatabase.user)
+  const host = firstDefined(environment.DEXTER_ANALYTICS_DB_HOST, defaultAnalyticsDatabase.host)
+  const database = firstDefined(environment.DEXTER_ANALYTICS_DB_NAME, defaultAnalyticsDatabase.database)
+  const user = firstDefined(environment.DEXTER_ANALYTICS_DB_USER, defaultAnalyticsDatabase.user)
   const password = firstDefined(
-    environment.MIROFISH_ANALYTICS_DB_PASSWORD,
+    environment.DEXTER_ANALYTICS_DB_PASSWORD,
     dpapiPassword,
     environment.PGPASSWORD,
     environment.POSTGRES_PASSWORD,
   )
   const port = parseInteger(
     firstDefined(
-      environment.MIROFISH_ANALYTICS_DB_PORT,
+      environment.DEXTER_ANALYTICS_DB_PORT,
       String(defaultAnalyticsDatabase.port),
     ),
     5432,
@@ -344,7 +344,7 @@ function resolveLocalPostgresConfig({
 
   if (!host || !database || !user || !password) {
     throw new Error(
-      `Missing PostgreSQL password for ${defaultAnalyticsDatabase.project}. Set MIROFISH_ANALYTICS_DB_PASSWORD, PGPASSWORD, DATABASE_URL, or POSTGRES_URL.`,
+      `Missing PostgreSQL password for ${defaultAnalyticsDatabase.project}. Set DEXTER_ANALYTICS_DB_PASSWORD, PGPASSWORD, DATABASE_URL, or POSTGRES_URL.`,
     )
   }
 
@@ -399,14 +399,14 @@ function resolveSshConfig({
   const configuredKeyPath =
     resolveProjectPath(projectRoot, options.sshKeyPath) ||
     resolveProjectPath(projectRoot, environment.DEPLOY_KEY) ||
-    resolveProjectPath(projectRoot, environment.MIROFISH_DEPLOY_PRIVATE_KEY_PATH) ||
-    resolveProjectPath(projectRoot, environment.MIROFISH_SSH_KEY_PATH)
+    resolveProjectPath(projectRoot, environment.DEXTER_DEPLOY_PRIVATE_KEY_PATH) ||
+    resolveProjectPath(projectRoot, environment.DEXTER_SSH_KEY_PATH)
   const sshPassword =
     options.sshPassword ||
     firstDefined(
-      environment.MIROFISH_DEPLOY_ROOT_PASSWORD,
-      environment.MIROFISH_DEPLOY_PASSWORD,
-      environment.MIROFISH_ROOT_PASSWORD,
+      environment.DEXTER_DEPLOY_ROOT_PASSWORD,
+      environment.DEXTER_DEPLOY_PASSWORD,
+      environment.DEXTER_ROOT_PASSWORD,
     )
   const sshKeyPath = configuredKeyPath && existsSync(configuredKeyPath)
     ? configuredKeyPath
@@ -418,19 +418,19 @@ function resolveSshConfig({
     host: firstDefined(
       options.sshHost,
       environment.DEPLOY_HOST,
-      environment.MIROFISH_DEPLOY_HOST,
-      environment.MIROFISH_SERVER_IP,
-      environment.MIROFISH_SERVER_HOST,
+      environment.DEXTER_DEPLOY_HOST,
+      environment.DEXTER_SERVER_IP,
+      environment.DEXTER_SERVER_HOST,
     ),
     port: parseInteger(
-      options.sshPort || environment.DEPLOY_PORT || environment.MIROFISH_DEPLOY_PORT || environment.MIROFISH_SERVER_PORT,
+      options.sshPort || environment.DEPLOY_PORT || environment.DEXTER_DEPLOY_PORT || environment.DEXTER_SERVER_PORT,
       22,
     ),
     username: firstDefined(
       options.sshUser,
       environment.DEPLOY_USER,
-      environment.MIROFISH_DEPLOY_USERNAME,
-      environment.MIROFISH_SERVER_USERNAME,
+      environment.DEXTER_DEPLOY_USERNAME,
+      environment.DEXTER_SERVER_USERNAME,
       'root',
     ),
     password: sshPassword,
@@ -438,12 +438,12 @@ function resolveSshConfig({
   }
 
   if (!config.host) {
-    throw new Error('Missing SSH host. Set MIROFISH_DEPLOY_HOST, MIROFISH_SERVER_IP, or pass --ssh-host.')
+    throw new Error('Missing SSH host. Set DEXTER_DEPLOY_HOST, DEXTER_SERVER_IP, or pass --ssh-host.')
   }
 
   if (!config.privateKeyPath && !config.password) {
     throw new Error(
-      'Missing SSH authentication. Provide --ssh-key-path, set DEPLOY_KEY or MIROFISH_SSH_KEY_PATH, or configure an SSH password.',
+      'Missing SSH authentication. Provide --ssh-key-path, set DEPLOY_KEY or DEXTER_SSH_KEY_PATH, or configure an SSH password.',
     )
   }
 
@@ -1016,19 +1016,19 @@ set +a
 TMP_SQL=$(mktemp)
 trap 'rm -f "$TMP_SQL"' EXIT
 printf '%s' "$SQL_B64" | base64 -d > "$TMP_SQL"
-CONNECTION_URL="\${MIROFISH_ANALYTICS_DATABASE_URL:-\${MIROFISH_POSTGRES_URL:-\${DATABASE_URL:-\${POSTGRES_URL:-\${POSTGRES_PRISMA_URL:-}}}}}"
+CONNECTION_URL="\${DEXTER_ANALYTICS_DATABASE_URL:-\${DEXTER_POSTGRES_URL:-\${DATABASE_URL:-\${POSTGRES_URL:-\${POSTGRES_PRISMA_URL:-}}}}}"
 if [ -n "$CONNECTION_URL" ]; then
   psql -X -v ON_ERROR_STOP=1 -A -t "$CONNECTION_URL" -f "$TMP_SQL"
   exit 0
 fi
-PGHOST_VALUE="\${MIROFISH_ANALYTICS_DB_HOST:-\${PGHOST:-\${POSTGRES_HOST:-}}}"
-PGDATABASE_VALUE="\${MIROFISH_ANALYTICS_DB_NAME:-\${PGDATABASE:-\${POSTGRES_DATABASE:-}}}"
-PGUSER_VALUE="\${MIROFISH_ANALYTICS_DB_USER:-\${PGUSER:-\${POSTGRES_USER:-}}}"
-PGPASSWORD_VALUE="\${MIROFISH_ANALYTICS_DB_PASSWORD:-\${PGPASSWORD:-\${POSTGRES_PASSWORD:-}}}"
-PGPORT_VALUE="\${MIROFISH_ANALYTICS_DB_PORT:-\${PGPORT:-\${POSTGRES_PORT:-5432}}}"
-PGSSLMODE_VALUE="\${MIROFISH_ANALYTICS_DB_SSLMODE:-\${PGSSLMODE:-\${POSTGRES_SSLMODE:-}}}"
+PGHOST_VALUE="\${DEXTER_ANALYTICS_DB_HOST:-\${PGHOST:-\${POSTGRES_HOST:-}}}"
+PGDATABASE_VALUE="\${DEXTER_ANALYTICS_DB_NAME:-\${PGDATABASE:-\${POSTGRES_DATABASE:-}}}"
+PGUSER_VALUE="\${DEXTER_ANALYTICS_DB_USER:-\${PGUSER:-\${POSTGRES_USER:-}}}"
+PGPASSWORD_VALUE="\${DEXTER_ANALYTICS_DB_PASSWORD:-\${PGPASSWORD:-\${POSTGRES_PASSWORD:-}}}"
+PGPORT_VALUE="\${DEXTER_ANALYTICS_DB_PORT:-\${PGPORT:-\${POSTGRES_PORT:-5432}}}"
+PGSSLMODE_VALUE="\${DEXTER_ANALYTICS_DB_SSLMODE:-\${PGSSLMODE:-\${POSTGRES_SSLMODE:-}}}"
 if [ -z "$PGHOST_VALUE" ] || [ -z "$PGDATABASE_VALUE" ] || [ -z "$PGUSER_VALUE" ] || [ -z "$PGPASSWORD_VALUE" ]; then
-  echo "PostgreSQL variables are missing from $ENV_FILE. Set MIROFISH_ANALYTICS_DATABASE_URL/DATABASE_URL or MIROFISH_ANALYTICS_DB_HOST, MIROFISH_ANALYTICS_DB_NAME, MIROFISH_ANALYTICS_DB_USER, and MIROFISH_ANALYTICS_DB_PASSWORD." >&2
+  echo "PostgreSQL variables are missing from $ENV_FILE. Set DEXTER_ANALYTICS_DATABASE_URL/DATABASE_URL or DEXTER_ANALYTICS_DB_HOST, DEXTER_ANALYTICS_DB_NAME, DEXTER_ANALYTICS_DB_USER, and DEXTER_ANALYTICS_DB_PASSWORD." >&2
   exit 1
 fi
 export PGPASSWORD="$PGPASSWORD_VALUE"
@@ -1106,7 +1106,7 @@ def classify(method, target):
         return 'suspiciousScan'
     if path.startswith('/api/'):
         return 'api'
-    if path.startswith('/mirofish-console/') or path.startswith('/console/'):
+    if path.startswith('/dexter-console/') or path.startswith('/console/'):
         return 'consoleProxy'
     if path.startswith('/assets/') or path.endswith(static_suffixes):
         return 'staticAsset'

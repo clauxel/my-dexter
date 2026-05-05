@@ -1,0 +1,17 @@
+node_modules/
+worker/
+server-lib/
+api/
+scripts/
+functions/
+.git/
+.github/
+.wrangler/
+.pagesignore
+_routes.json
+*.log
+*.err.log
+package.json
+package-lock.json
+wrangler.toml
+dev-server.mjs

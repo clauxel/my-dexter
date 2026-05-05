@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MiroFish Checkout</title>
-  <meta name="description" content="Complete your MiroFish plan checkout on the MiroFish website." />
+  <title>Dexter AI Checkout</title>
+  <meta name="description" content="Complete your Dexter AI plan checkout on the Dexter AI website." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   <script defer src="/assets/analytics.js"></script>
@@ -322,7 +322,7 @@
   <nav class="nav" aria-label="Checkout navigation">
     <a class="brand" href="/">
       <img src="/favicon.svg" alt="" />
-      <span>MiroFish</span>
+      <span>Dexter AI</span>
     </a>
     <a class="back-link" href="/#pricing">Back to Pricing</a>
   </nav>
@@ -330,17 +330,17 @@
   <main>
     <section class="hero-card" aria-labelledby="checkout-heading">
       <div>
-        <p class="eyebrow">MiroFish Checkout</p>
+        <p class="eyebrow">Dexter AI Checkout</p>
         <h1 id="checkout-heading">Finish your plan on this site.</h1>
         <p class="lead">
           Review your selected tier, billing cadence, and amount before preparing a secure payment session.
-          The pricing buttons now land here first, so you stay inside MiroFish before continuing.
+          The pricing buttons now land here first, so you stay inside Dexter AI before continuing.
         </p>
       </div>
       <div class="trust-row" aria-label="Checkout assurances">
         <div class="trust-item">
           <div class="trust-value">Local</div>
-          <div class="trust-label">Plan review happens on the MiroFish website.</div>
+          <div class="trust-label">Plan review happens on the Dexter AI website.</div>
         </div>
         <div class="trust-item">
           <div class="trust-value">Clear</div>
@@ -400,20 +400,20 @@
       starter: {
         id: 'starter',
         name: 'Starter',
-        monthlyAmountCents: 900,
+        monthlyAmountCents: 1000,
         subtitle: 'Lightweight exploration',
       },
       pro: {
         id: 'pro',
         name: 'Pro',
-        monthlyAmountCents: 2900,
+        monthlyAmountCents: 3000,
         annualDiscountMultiplier,
         subtitle: 'Hosted checkout for regular teams',
       },
       enterprise: {
         id: 'enterprise',
         name: 'Enterprise',
-        monthlyAmountCents: 5900,
+        monthlyAmountCents: 6000,
         subtitle: 'High-scale teams and dedicated support',
       },
     }
@@ -470,9 +470,9 @@
     document.querySelector('[data-discount-label]').textContent = pricing.discountLabel
 
     function track(eventName, metadata) {
-      if (!window.MiroFishAnalytics || typeof window.MiroFishAnalytics.track !== 'function') return
+      if (!window.DexterAnalytics || typeof window.DexterAnalytics.track !== 'function') return
       try {
-        window.MiroFishAnalytics.track({
+        window.DexterAnalytics.track({
           eventType: eventName === 'plan_selected' ? 'plan' : 'checkout',
           eventName,
           sectionKey: 'checkout',
@@ -522,14 +522,14 @@
         `left=${left}`,
         `top=${top}`,
       ].join(',')
-      const popup = window.open('about:blank', 'mirofish-creem-checkout', features)
+      const popup = window.open('about:blank', 'dexter-creem-checkout', features)
       if (popup) {
         popup.focus()
         popup.document.open()
         popup.document.write(
-          '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>MiroFish Payment</title><style>' +
+          '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Dexter AI Payment</title><style>' +
             'body{margin:0;font-family:Inter,Arial,sans-serif;background:#0d1b2e;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}main{max-width:360px;text-align:center;}strong{display:block;margin-bottom:10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#00e5ff;}h1{font-size:28px;line-height:1.1;margin:0 0 12px;}p{margin:0;color:rgba(255,255,255,.72);line-height:1.6;}' +
-            '</style></head><body><main><strong>MiroFish</strong><h1>Preparing Creem payment</h1><p>Keep this window open while we create your secure checkout session.</p></main></body></html>',
+            '</style></head><body><main><strong>Dexter AI</strong><h1>Preparing Creem payment</h1><p>Keep this window open while we create your secure checkout session.</p></main></body></html>',
         )
         popup.document.close()
       }
@@ -556,7 +556,7 @@
     function markPaymentComplete(orderId) {
       stopPopupMonitor()
       statusBox.dataset.tone = 'success'
-      statusBox.textContent = 'Payment completed successfully. Your MiroFish checkout has returned to this site.'
+      statusBox.textContent = 'Payment completed successfully. Your Dexter AI checkout has returned to this site.'
       button.textContent = 'Prepare Another Payment'
       paymentLink.hidden = true
       paymentLink.removeAttribute('href')
@@ -573,7 +573,7 @@
       if (window.opener && window.opener !== window) {
         try {
           window.opener.postMessage({
-            type: 'mirofish-checkout-result',
+            type: 'dexter-checkout-result',
             status: 'success',
             orderId: params.get('order') || '',
             planId: params.get('plan') || pricing.selectionId,
@@ -587,7 +587,7 @@
 
     window.addEventListener('message', function (event) {
       if (!isAllowedMessageOrigin(event.origin)) return
-      if (!event.data || event.data.type !== 'mirofish-checkout-result') return
+      if (!event.data || event.data.type !== 'dexter-checkout-result') return
       if (event.data.status === 'success') {
         markPaymentComplete(event.data.orderId || '')
       }
@@ -598,7 +598,7 @@
       paymentLink.hidden = true
       paymentLink.removeAttribute('href')
       statusBox.removeAttribute('data-tone')
-      statusBox.textContent = 'Preparing your MiroFish payment popup...'
+      statusBox.textContent = 'Preparing your Dexter AI payment popup...'
       paymentPopup = openPaymentPopup()
       track('checkout_started', {
         source,

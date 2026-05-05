@@ -1,7 +1,7 @@
 (function () {
-  var visitorStorageKey = 'mirofish-analytics-visitor-id'
-  var sessionStorageKey = 'mirofish-analytics-session'
-  var pendingEventsStorageKey = 'mirofish-analytics-pending-events'
+  var visitorStorageKey = 'dexter-analytics-visitor-id'
+  var sessionStorageKey = 'dexter-analytics-session'
+  var pendingEventsStorageKey = 'dexter-analytics-pending-events'
   var endpoint = '/api/analytics/events'
   var maxQueuedEvents = 250
   var initialized = false
@@ -148,10 +148,10 @@
 
     var href = element.getAttribute('href') || ''
     var text = (element.getAttribute('aria-label') || element.textContent || element.name || element.id || '').trim()
-    var explicitKey = sanitizeIdentifier(element.dataset.analyticsClick, 96)
+    var explicitKey = sanitizeIdentifier(element.dataset.analyticsClick || element.dataset.analyticsCta, 96)
     var elementKey = explicitKey || sanitizeIdentifier(text || href || element.tagName, 96)
     var section = element.closest('[data-analytics-section], section[id]')
-    var isCta = element.dataset.analyticsCta === 'true' ||
+    var isCta = Boolean(element.dataset.analyticsCta) ||
       element.classList.contains('btn-primary') ||
       element.classList.contains('btn-start') ||
       element.classList.contains('btn-cta-primary') ||
@@ -283,7 +283,7 @@
     window.addEventListener('pagehide', function () { flush(true) })
     window.addEventListener('scroll', handleScrollDepth, { passive: true })
     window.addEventListener('popstate', syncPage)
-    window.MiroFishAnalytics = {
+    window.DexterAnalytics = {
       track: track,
       flush: flush,
       syncPage: syncPage,

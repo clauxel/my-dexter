@@ -21,7 +21,7 @@
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Dexter AI" />
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","@id":"https://dexter.mom/#software","name":"Dexter AI","applicationCategory":"FinanceApplication","applicationSubCategory":"AI Financial Research","operatingSystem":"Web","description":"Autonomous financial research agent that decomposes complex questions, accesses live market data, and delivers self-validated research reports.","url":"https://dexter.mom/","offers":[{"@type":"Offer","name":"Starter","price":"9","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"29","priceCurrency":"USD"},{"@type":"Offer","name":"Enterprise","price":"59","priceCurrency":"USD"}],"featureList":["Autonomous research task decomposition","Live market data access","Income statement and balance sheet analysis","Self-validating research loop","Multi-LLM support","Natural language financial queries"],"sameAs":["https://github.com/virattt/dexter"]},{"@type":"FAQPage","@id":"https://dexter.mom/#faq","mainEntity":[{"@type":"Question","name":"What is Dexter AI?","acceptedAnswer":{"@type":"Answer","text":"Dexter AI is an autonomous financial research agent. Ask any financial question and Dexter breaks it into tasks, pulls live data from financial datasets, validates the findings, and returns a structured research report."}},{"@type":"Question","name":"How is Dexter AI different from ChatGPT?","acceptedAnswer":{"@type":"Answer","text":"ChatGPT generates text from training data. Dexter actively queries live financial data sources — income statements, balance sheets, cash flows, market prices — and validates its own results through iterative review."}},{"@type":"Question","name":"Does Dexter AI use real market data?","acceptedAnswer":{"@type":"Answer","text":"Yes. Dexter connects to live financial data APIs including income statements, balance sheets, cash flow statements, and real-time market prices."}}]}]}
+  {"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","@id":"https://dexter.mom/#software","name":"Dexter AI","applicationCategory":"FinanceApplication","applicationSubCategory":"AI Financial Research","operatingSystem":"Web","description":"Autonomous financial research agent that decomposes complex questions, accesses live market data, and delivers self-validated research reports.","url":"https://dexter.mom/","offers":[{"@type":"Offer","name":"Starter","price":"10","priceCurrency":"USD"},{"@type":"Offer","name":"Pro","price":"30","priceCurrency":"USD"},{"@type":"Offer","name":"Enterprise","price":"60","priceCurrency":"USD"}],"featureList":["Autonomous research task decomposition","Live market data access","Income statement and balance sheet analysis","Self-validating research loop","Multi-LLM support","Natural language financial queries"],"sameAs":["https://github.com/virattt/dexter"]},{"@type":"FAQPage","@id":"https://dexter.mom/#faq","mainEntity":[{"@type":"Question","name":"What is Dexter AI?","acceptedAnswer":{"@type":"Answer","text":"Dexter AI is an autonomous financial research agent. Ask any financial question and Dexter breaks it into tasks, pulls live data from financial datasets, validates the findings, and returns a structured research report."}},{"@type":"Question","name":"How is Dexter AI different from ChatGPT?","acceptedAnswer":{"@type":"Answer","text":"ChatGPT generates text from training data. Dexter actively queries live financial data sources — income statements, balance sheets, cash flows, market prices — and validates its own results through iterative review."}},{"@type":"Question","name":"Does Dexter AI use real market data?","acceptedAnswer":{"@type":"Answer","text":"Yes. Dexter connects to live financial data APIs including income statements, balance sheets, cash flow statements, and real-time market prices."}}]}]}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -58,7 +58,7 @@
     .btn-primary:hover{background:var(--ink-mid);transform:translateY(-1px);box-shadow:var(--shadow-green)}
     .btn-large{padding:14px 28px;font-size:1rem;border-radius:var(--radius-md)}
 
-    .hero{min-height:100vh;padding:120px 40px 80px;background:var(--gradient-hero);display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;max-width:1280px;margin:0 auto}
+    .hero{min-height:calc(100vh - 96px);padding:104px 40px 56px;background:var(--gradient-hero);display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;max-width:1280px;margin:0 auto}
     .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
     .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
     .tag-primary{background:rgba(0,200,150,0.12);color:var(--green-primary);border:1px solid rgba(0,200,150,0.25)}
@@ -192,8 +192,13 @@
     .modal-status.success{background:rgba(0,200,150,0.1);color:#059669}
 
     @media(max-width:900px){
-      .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:40px}
-      .nav{padding:0 24px}.nav-links{display:none}
+      .hero{grid-template-columns:1fr;min-height:auto;padding:96px 24px 52px;gap:32px}
+      .nav{padding:0 16px}.nav-links{display:none}
+      .nav-logo{font-size:1rem;gap:8px;white-space:nowrap}
+      .nav-logo svg{width:30px;height:30px;flex:0 0 auto}
+      .nav-cta{gap:8px}
+      .nav-cta .btn-ghost{display:none}
+      .nav-cta .btn-primary{padding:9px 14px;white-space:nowrap}
       .section{padding:64px 24px}
       .plan-card.featured{transform:scale(1)}
       .hero-demo{display:none}
@@ -219,7 +224,7 @@
   </div>
   <div class="nav-cta">
     <a href="#pricing" class="btn-ghost">See Plans</a>
-    <button class="btn-primary" data-launch-open data-analytics-cta="start_research" data-analytics-section="nav">Start Free →</button>
+    <button class="btn-primary" data-launch-open data-analytics-cta="start_research" data-analytics-section="nav">Start Researching →</button>
   </div>
 </nav>
 
@@ -238,7 +243,7 @@
     <p class="hero-desc">Ask any financial question. Dexter decomposes it into research tasks, pulls live income statements and market data, self-validates the findings, and delivers a structured report — automatically.</p>
     <div class="hero-flow">▶ dexter.ask("Compare Apple and Microsoft margins Q1–Q4") <span class="demo-cursor"></span></div>
     <div class="hero-actions">
-      <button class="btn-cta btn-large" data-launch-open data-analytics-cta="start_research" data-analytics-section="hero">Start Researching Free →</button>
+      <button class="btn-cta btn-large" data-launch-open data-analytics-cta="start_research" data-analytics-section="hero">Start Researching →</button>
       <a href="#how-it-works" class="btn-ghost btn-large">See How It Works</a>
     </div>
     <div class="hero-proof">
@@ -312,8 +317,8 @@
 <div class="pricing-bg" id="pricing">
   <div class="section" style="padding-top:0">
     <div class="section-label">Simple Pricing</div>
-    <h2 class="section-title">Start Free. Scale as You Research.</h2>
-    <p class="section-sub">All plans include a 7-day free trial. No credit card required to start.</p>
+    <h2 class="section-title">Start Researching. Scale When It Pays Off.</h2>
+    <p class="section-sub">Annual plans are selected by default and priced 50% lower than monthly billing.</p>
     <div class="billing-toggle">
       <span class="toggle-option" id="toggle-monthly" data-cycle="monthly">Monthly</span>
       <span class="toggle-option active" id="toggle-annual" data-cycle="annual">Annual <span class="toggle-save">SAVE 50%</span></span>
@@ -321,7 +326,7 @@
     <div class="plans-grid">
       <div class="plan-card" data-plan="starter">
         <div class="plan-name">Starter</div>
-        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="9" data-annual="5">5</span></div>
+        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="10" data-annual="5">5</span></div>
         <div class="plan-period period-label">per month, billed annually</div>
         <div class="plan-subtitle">For individual investors exploring AI research</div>
         <ul class="plan-features">
@@ -336,7 +341,7 @@
       <div class="plan-card featured" data-plan="pro">
         <div class="plan-badge">MOST POPULAR</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="29" data-annual="15">15</span></div>
+        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="30" data-annual="15">15</span></div>
         <div class="plan-period period-label">per month, billed annually</div>
         <div class="plan-subtitle">For active analysts and portfolio managers</div>
         <ul class="plan-features">
@@ -347,11 +352,11 @@
           <li>Priority processing</li>
           <li>Chat support</li>
         </ul>
-        <button class="btn-plan btn-plan-featured" data-launch-open data-plan-id="pro" data-analytics-cta="choose_pro" data-analytics-section="pricing">Start Pro Trial →</button>
+        <button class="btn-plan btn-plan-featured" data-launch-open data-plan-id="pro" data-analytics-cta="choose_pro" data-analytics-section="pricing">Continue with Pro →</button>
       </div>
       <div class="plan-card" data-plan="enterprise">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="59" data-annual="30">30</span></div>
+        <div class="plan-price"><span>$</span><span class="price-val" data-monthly="60" data-annual="30">30</span></div>
         <div class="plan-period period-label">per month, billed annually</div>
         <div class="plan-subtitle">For funds, research teams, and institutions</div>
         <ul class="plan-features">
@@ -387,7 +392,7 @@
       <div class="faq-item"><div class="faq-q">How is Dexter AI different from ChatGPT or Perplexity?</div><div class="faq-a">ChatGPT generates text from training data. Perplexity browses the web. Dexter actively queries structured financial data APIs — income statements, balance sheets, cash flows, real-time prices — then validates output through iterative cross-checking. It retrieves and verifies, not guesses.</div></div>
       <div class="faq-item"><div class="faq-q">Is the financial data real-time?</div><div class="faq-a">Yes. Dexter connects to live financial data providers for income statements, balance sheet data, cash flow statements, and market pricing. It does not rely on training-data knowledge for financial figures.</div></div>
       <div class="faq-item"><div class="faq-q">What AI models does Dexter use?</div><div class="faq-a">Pro and Enterprise plans support Claude (Anthropic), GPT (OpenAI), Gemini (Google), and xAI. Dexter selects optimal model routing per research sub-task.</div></div>
-      <div class="faq-item"><div class="faq-q">Is there a free trial?</div><div class="faq-a">Yes. All plans come with a 7-day free trial. No credit card required to start. Cancel anytime from your account settings.</div></div>
+      <div class="faq-item"><div class="faq-q">Can I start with the middle plan?</div><div class="faq-a">Yes. Pro is selected by default because it includes unlimited research, API access, and priority processing. Annual billing is selected by default because it saves 50% compared with monthly billing.</div></div>
       <div class="faq-item"><div class="faq-q">How does the annual discount work?</div><div class="faq-a">Choosing annual billing saves you 50% compared to monthly. The discount is applied automatically when you select annual at checkout. You can switch back to monthly at renewal.</div></div>
     </div>
   </div>
@@ -396,7 +401,7 @@
 <div class="cta-banner" data-analytics-section="cta">
   <h2>Stop Googling Financials. Start Researching.</h2>
   <p>Join thousands of analysts using Dexter to research faster, smarter, and more accurately.</p>
-  <button class="btn-cta btn-large" data-launch-open data-analytics-cta="start_research" data-analytics-section="cta">Get Your First Research Report Free →</button>
+  <button class="btn-cta btn-large" data-launch-open data-analytics-cta="start_research" data-analytics-section="cta">Get Your First Research Report →</button>
 </div>
 
 <footer>
@@ -417,7 +422,7 @@
   <div class="modal-box">
     <button class="modal-close" id="modal-close-btn" aria-label="Close">×</button>
     <div class="modal-title" id="modal-title-label">Start Your Research Plan</div>
-    <div class="modal-sub">All plans include a 7-day free trial. Cancel anytime.</div>
+    <div class="modal-sub">Pro annual is selected by default. Switch plan or billing before checkout.</div>
     <div class="billing-tabs">
       <div class="billing-tab" id="modal-tab-monthly" data-modal-cycle="monthly">Monthly</div>
       <div class="billing-tab active" id="modal-tab-annual" data-modal-cycle="annual">Annual <span class="billing-save">50% OFF</span></div>
@@ -441,7 +446,7 @@
       <div class="modal-total-price" id="modal-total-price">$180 / year</div>
     </div>
     <button class="btn-checkout" id="modal-checkout-btn">Continue to Secure Checkout →</button>
-    <div class="modal-guarantee">🔒 Secure checkout via Creem · 7-day free trial · Cancel anytime</div>
+    <div class="modal-guarantee">🔒 Secure checkout via Creem · Annual billing saves 50%</div>
     <div class="modal-status" id="modal-status"></div>
   </div>
 </div>

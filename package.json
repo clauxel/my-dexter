@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node dev-server.mjs",
     "build:worker": "echo worker ready",
-    "cloudflare:worker:deploy": "npx wrangler deploy --keep-vars"
+    "cloudflare:worker:deploy": "npx wrangler deploy --keep-vars",
+    "cloudflare:pages:deploy": "npx wrangler pages deploy . --project-name=my-dexter --branch=main --commit-dirty=true"
   },
   "dependencies": {
     "pg": "^8.20.0",

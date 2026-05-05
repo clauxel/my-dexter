@@ -6,9 +6,9 @@ const defaultSiteDescription =
 const annualDiscountMultiplier = 0.5
 
 const planCatalog = [
-  { id: 'starter',    name: 'Starter',    monthlyAmountCents: 900,  currency: 'USD' },
-  { id: 'pro',        name: 'Pro',         monthlyAmountCents: 2900, currency: 'USD' },
-  { id: 'enterprise', name: 'Enterprise',  monthlyAmountCents: 5900, currency: 'USD' },
+  { id: 'starter',    name: 'Starter',    monthlyAmountCents: 1000, currency: 'USD' },
+  { id: 'pro',        name: 'Pro',         monthlyAmountCents: 3000, currency: 'USD' },
+  { id: 'enterprise', name: 'Enterprise',  monthlyAmountCents: 6000, currency: 'USD' },
 ]
 
 const indexablePaths = [
@@ -129,8 +129,10 @@ async function getOrCreateCreemProduct(apiKey, plan, billingCycle, origin) {
       description: `${displayPrice}/mo · ${billingCycle === 'annual' ? 'Billed annually' : 'Billed monthly'} · Autonomous financial research`,
       price: totalAmount,
       currency: plan.currency,
-      billing_type: 'one_time',
-      success_url: `${origin}/?checkout=success`,
+      billing_type: 'onetime',
+      tax_mode: 'inclusive',
+      tax_category: 'saas',
+      default_success_url: `${origin}/?checkout=success`,
     }),
   })
 
@@ -154,7 +156,6 @@ async function createCreemCheckout(apiKey, productId, origin) {
     body: JSON.stringify({
       product_id: productId,
       success_url: `${origin}/?checkout=success`,
-      cancel_url: `${origin}/?checkout=cancelled`,
     }),
   })
 
@@ -204,6 +205,11 @@ function handleRuntime(request, env) {
   return jsonResponse({ ok: true, publicAppOrigin: origin, ts: Date.now() })
 }
 
+function handleAnalyticsEvents(request) {
+  if (request.method !== 'POST') return errorResponse(405, 'Method not allowed')
+  return jsonResponse({ message: 'Analytics events accepted.', accepted: true, persisted: false }, 202)
+}
+
 function buildSitemapXml(origin) {
   const today = new Date().toISOString().slice(0, 10)
   const urls = indexablePaths.map(path => `  <url>
@@ -234,22 +240,33 @@ function handleRobots(request, env) {
   return new Response(body, { status: 200, headers })
 }
 
-async function handleRequest(request, env) {
+async function fetchAsset(request, env, assetFetcher) {
+  if (assetFetcher) return await assetFetcher(request, env)
+  if (env?.ASSETS?.fetch) return await env.ASSETS.fetch(request)
+  return new Response('Cloudflare ASSETS binding is unavailable.', {
+    status: 500,
+    headers: getSecurityHeaders(),
+  })
+}
+
+export async function handleCloudflareRequest(request, env, options = {}) {
   const url = new URL(request.url)
   const path = url.pathname
+  const assetFetcher = options.assetFetcher
 
   if (path === '/api/launch-checkout') return handleLaunchCheckout(request, env)
+  if (path === '/api/analytics/events') return handleAnalyticsEvents(request)
   if (path === '/api/runtime') return handleRuntime(request, env)
   if (path === '/sitemap.xml') return handleSitemap(request, env)
   if (path === '/robots.txt') return handleRobots(request, env)
 
-  return env.ASSETS.fetch(request)
+  return fetchAsset(request, env, assetFetcher)
 }
 
 export default {
   async fetch(request, env) {
     try {
-      return await handleRequest(request, env)
+      return await handleCloudflareRequest(request, env)
     } catch (err) {
       return errorResponse(500, 'Internal server error')
     }
