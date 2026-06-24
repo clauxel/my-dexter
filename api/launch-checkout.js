@@ -6,8 +6,8 @@ import { loadLocalEnvironment } from '../server-lib/env-loader.mjs'
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)))
 const bodyLimitBytes = 1024 * 1024
 const annualDiscountMultiplier = 0.5
-const creemProductCache = globalThis.__dexterCreemProductCache ?? new Map()
-globalThis.__dexterCreemProductCache = creemProductCache
+const polarProductCache = globalThis.__dexterPolarProductCache ?? new Map()
+globalThis.__dexterPolarProductCache = polarProductCache
 
 let checkoutEnvironmentLoaded = false
 
@@ -104,7 +104,7 @@ function getRequestOrigin(request) {
 }
 
 function getDefaultSuccessUrl(request) {
-  const configuredSuccessUrl = String(process.env.CREEM_DEFAULT_SUCCESS_URL ?? '').trim()
+  const configuredSuccessUrl = String(process.env.POLAR_DEFAULT_SUCCESS_URL ?? '').trim()
   if (configuredSuccessUrl) {
     return configuredSuccessUrl
   }
@@ -117,14 +117,14 @@ function buildCheckoutSuccessUrl({ request, order, planSelection }) {
   successUrl.searchParams.set('checkout', 'success')
   successUrl.searchParams.set('order', order.id)
   successUrl.searchParams.set('plan', planSelection.selectionId)
-  successUrl.searchParams.set('provider', 'creem')
+  successUrl.searchParams.set('provider', 'polar')
   return successUrl
 }
 
-function getCreemSettings() {
-  const environmentSetting = String(process.env.CREEM_ENV ?? process.env.CREEM_MODE ?? '').trim().toLowerCase()
-  const testApiKey = process.env.API_TEST_KEY ?? process.env.CREEM_TEST_KEY ?? process.env.creem_test_key ?? ''
-  const liveApiKey = process.env.API_PROD_KEY ?? process.env.CREEM_API_KEY ?? process.env.CREEM_KEY ?? ''
+function getPolarSettings() {
+  const environmentSetting = String(process.env.POLAR_ENV ?? process.env.POLAR_MODE ?? '').trim().toLowerCase()
+  const testApiKey = process.env.API_TEST_KEY ?? process.env.POLAR_TEST_KEY ?? process.env.polar_test_key ?? ''
+  const liveApiKey = process.env.API_PROD_KEY ?? process.env.POLAR_API_KEY ?? process.env.POLAR_KEY ?? ''
   const isTestMode =
     environmentSetting === 'test'
       ? true
@@ -132,7 +132,7 @@ function getCreemSettings() {
         ? false
         : process.env.NODE_ENV !== 'production' && Boolean(testApiKey)
   const apiKey = isTestMode ? testApiKey : liveApiKey || (process.env.NODE_ENV !== 'production' ? testApiKey : '')
-  const baseUrl = process.env.CREEM_BASE_URL ?? (isTestMode ? 'https://test-api.creem.io' : 'https://api.creem.io')
+  const baseUrl = process.env.POLAR_BASE_URL ?? (isTestMode ? 'https://test-api.polar.sh' : 'https://api.polar.sh')
 
   return {
     apiKey,
@@ -289,13 +289,13 @@ function resolvePlanSelection(planSelectionId) {
   }
 }
 
-function getConfiguredCreemProductId(planSelection) {
+function getConfiguredPolarProductId(planSelection) {
   const keys = [
-    `CREEM_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.selectionId)}`,
-    `CREEM_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.planId)}`,
-    `CREEM_PRODUCT_ID_${normalizeKey(planSelection.selectionId)}`,
-    `CREEM_PRODUCT_ID_${normalizeKey(planSelection.planId)}`,
-    'CREEM_PRODUCT_ID',
+    `POLAR_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.selectionId)}`,
+    `POLAR_PRODUCT_ID_DEXTER_${normalizeKey(planSelection.planId)}`,
+    `POLAR_PRODUCT_ID_${normalizeKey(planSelection.selectionId)}`,
+    `POLAR_PRODUCT_ID_${normalizeKey(planSelection.planId)}`,
+    'POLAR_PRODUCT_ID',
   ]
 
   for (const key of keys) {
@@ -308,16 +308,16 @@ function getConfiguredCreemProductId(planSelection) {
   return null
 }
 
-async function createCreemCheckout({ order, planSelection, source, request }) {
-  const { apiKey, baseUrl, isTestMode } = getCreemSettings()
+async function createPolarCheckout({ order, planSelection, source, request }) {
+  const { apiKey, baseUrl, isTestMode } = getPolarSettings()
   const cacheKey = `${isTestMode ? 'test' : 'live'}:${planSelection.selectionId}:${order.amountCents}:${order.currency}`
   const successUrl = buildCheckoutSuccessUrl({ request, order, planSelection })
 
   if (!apiKey) {
-    throw new HttpError(503, 'Creem payment is not configured on this deployment.')
+    throw new HttpError(503, 'Polar payment is not configured on this deployment.')
   }
 
-  let productId = getConfiguredCreemProductId(planSelection) ?? creemProductCache.get(cacheKey)
+  let productId = getConfiguredPolarProductId(planSelection) ?? polarProductCache.get(cacheKey)
 
   const headers = {
     'x-api-key': apiKey,
@@ -342,10 +342,10 @@ async function createCreemCheckout({ order, planSelection, source, request }) {
 
     productId = product.id
     if (!productId) {
-      throw new HttpError(502, 'Creem product did not return an id.')
+      throw new HttpError(502, 'Polar product did not return an id.')
     }
 
-    creemProductCache.set(cacheKey, productId)
+    polarProductCache.set(cacheKey, productId)
   }
 
   const checkout = await requestJson(`${baseUrl}/v1/checkouts`, {
@@ -366,13 +366,13 @@ async function createCreemCheckout({ order, planSelection, source, request }) {
 
   const checkoutUrl = getCheckoutUrl(checkout)
   if (!checkoutUrl) {
-    throw new HttpError(502, 'Creem checkout did not return a hosted checkout URL.')
+    throw new HttpError(502, 'Polar checkout did not return a hosted checkout URL.')
   }
 
   return {
     checkoutUrl,
-    creemCheckoutId: getCheckoutId(checkout),
-    paymentProvider: 'creem',
+    polarCheckoutId: getCheckoutId(checkout),
+    paymentProvider: 'polar',
   }
 }
 
@@ -403,7 +403,7 @@ export default async function handler(request, response) {
       currency: planSelection.currency,
     }
 
-    const checkout = await createCreemCheckout({
+    const checkout = await createPolarCheckout({
       order,
       planSelection,
       source: String(body.source ?? ''),
@@ -419,8 +419,8 @@ export default async function handler(request, response) {
       amountLabel: order.amountLabel,
       currency: order.currency,
       checkoutUrl: checkout.checkoutUrl,
-      paymentProvider: checkout.paymentProvider || 'creem',
-      creemCheckoutId: checkout.creemCheckoutId ?? null,
+      paymentProvider: checkout.paymentProvider || 'polar',
+      polarCheckoutId: checkout.polarCheckoutId ?? null,
     })
   } catch (error) {
     sendJson(response, error instanceof HttpError ? error.statusCode : 500, {

@@ -40,7 +40,7 @@ const seoPageMap = new Map([
   ['/checkout/', { title: 'Checkout | Dexter AI', description: 'Complete your Dexter AI plan checkout.', robots: 'noindex,nofollow' }],
 ])
 
-const creemProductCache = new Map()
+const polarProductCache = new Map()
 
 class HttpError extends Error {
   constructor(statusCode, message) {
@@ -109,9 +109,9 @@ function errorResponse(statusCode, message) {
   return jsonResponse({ error: message }, statusCode)
 }
 
-async function getOrCreateCreemProduct(apiKey, plan, billingCycle, origin) {
+async function getOrCreatePolarProduct(apiKey, plan, billingCycle, origin) {
   const cacheKey = `${plan.id}:${billingCycle}`
-  if (creemProductCache.has(cacheKey)) return creemProductCache.get(cacheKey)
+  if (polarProductCache.has(cacheKey)) return polarProductCache.get(cacheKey)
 
   const monthlyAmount = billingCycle === 'annual'
     ? Math.round(plan.monthlyAmountCents * annualDiscountMultiplier)
@@ -121,7 +121,7 @@ async function getOrCreateCreemProduct(apiKey, plan, billingCycle, origin) {
   const billingLabel = billingCycle === 'annual' ? 'annual' : 'monthly'
   const displayPrice = formatMoney(monthlyAmount, plan.currency)
 
-  const productResp = await fetch('https://api.creem.io/v1/products', {
+  const productResp = await fetch('https://api.polar.sh/v1/products', {
     method: 'POST',
     headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -138,19 +138,19 @@ async function getOrCreateCreemProduct(apiKey, plan, billingCycle, origin) {
 
   if (!productResp.ok) {
     const body = await productResp.text()
-    throw new HttpError(502, `Creem product error: ${body}`)
+    throw new HttpError(502, `Polar product error: ${body}`)
   }
 
   const product = await productResp.json()
   const productId = product.id || product.product_id
-  if (!productId) throw new HttpError(502, 'Creem did not return a product ID')
+  if (!productId) throw new HttpError(502, 'Polar did not return a product ID')
 
-  creemProductCache.set(cacheKey, productId)
+  polarProductCache.set(cacheKey, productId)
   return productId
 }
 
-async function createCreemCheckout(apiKey, productId, origin) {
-  const checkoutResp = await fetch('https://api.creem.io/v1/checkouts', {
+async function createPolarCheckout(apiKey, productId, origin) {
+  const checkoutResp = await fetch('https://api.polar.sh/v1/checkouts', {
     method: 'POST',
     headers: { 'x-api-key': apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -161,12 +161,12 @@ async function createCreemCheckout(apiKey, productId, origin) {
 
   if (!checkoutResp.ok) {
     const body = await checkoutResp.text()
-    throw new HttpError(502, `Creem checkout error: ${body}`)
+    throw new HttpError(502, `Polar checkout error: ${body}`)
   }
 
   const checkout = await checkoutResp.json()
   const checkoutUrl = checkout.checkout_url || checkout.url
-  if (!checkoutUrl) throw new HttpError(502, 'Creem did not return a checkout URL')
+  if (!checkoutUrl) throw new HttpError(502, 'Polar did not return a checkout URL')
 
   return checkoutUrl
 }
@@ -174,7 +174,7 @@ async function createCreemCheckout(apiKey, productId, origin) {
 async function handleLaunchCheckout(request, env) {
   if (request.method !== 'POST') return errorResponse(405, 'Method not allowed')
 
-  const apiKey = await firstSecretEnv(env, 'API_PROD_KEY', 'CREEM_API_KEY')
+  const apiKey = await firstSecretEnv(env, 'API_PROD_KEY', 'POLAR_API_KEY')
   if (!apiKey) return errorResponse(503, 'Payment is not configured for this deployment.')
 
   let body
@@ -191,8 +191,8 @@ async function handleLaunchCheckout(request, env) {
   const origin = getPublicOrigin(request, env)
 
   try {
-    const productId = await getOrCreateCreemProduct(apiKey, plan, billingCycle, origin)
-    const checkoutUrl = await createCreemCheckout(apiKey, productId, origin)
+    const productId = await getOrCreatePolarProduct(apiKey, plan, billingCycle, origin)
+    const checkoutUrl = await createPolarCheckout(apiKey, productId, origin)
     return jsonResponse({ checkoutUrl, planId, billingCycle })
   } catch (err) {
     if (err instanceof HttpError) return errorResponse(err.statusCode, err.message)

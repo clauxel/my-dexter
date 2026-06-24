@@ -522,14 +522,14 @@
         `left=${left}`,
         `top=${top}`,
       ].join(',')
-      const popup = window.open('about:blank', 'dexter-creem-checkout', features)
+      const popup = window.open('about:blank', 'dexter-polar-checkout', features)
       if (popup) {
         popup.focus()
         popup.document.open()
         popup.document.write(
           '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Dexter AI Payment</title><style>' +
             'body{margin:0;font-family:Inter,Arial,sans-serif;background:#0d1b2e;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;}main{max-width:360px;text-align:center;}strong{display:block;margin-bottom:10px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#00e5ff;}h1{font-size:28px;line-height:1.1;margin:0 0 12px;}p{margin:0;color:rgba(255,255,255,.72);line-height:1.6;}' +
-            '</style></head><body><main><strong>Dexter AI</strong><h1>Preparing Creem payment</h1><p>Keep this window open while we create your secure checkout session.</p></main></body></html>',
+            '</style></head><body><main><strong>Dexter AI</strong><h1>Preparing Polar payment</h1><p>Keep this window open while we create your secure checkout session.</p></main></body></html>',
         )
         popup.document.close()
       }
@@ -631,18 +631,18 @@
 
         statusBox.dataset.tone = 'success'
         statusBox.textContent = paymentPopup && !paymentPopup.closed
-          ? 'Creem checkout is open in a secure payment popup.'
-          : 'Creem checkout is ready. Your browser blocked the popup, so use the button below.'
+          ? 'Polar checkout is open in a secure payment popup.'
+          : 'Polar checkout is ready. Your browser blocked the popup, so use the button below.'
         paymentLink.href = payload.checkoutUrl
         paymentLink.hidden = Boolean(paymentPopup && !paymentPopup.closed)
-        paymentLink.textContent = 'Open Creem Payment'
+        paymentLink.textContent = 'Open Polar Payment'
         track('checkout_redirected', {
           source,
           planId: pricing.selectionId,
           billingCycle,
           amountCents: pricing.amountCents,
           orderId: payload.orderId || '',
-          paymentProvider: payload.paymentProvider || 'creem',
+          paymentProvider: payload.paymentProvider || 'polar',
           popupMode: paymentPopup && !paymentPopup.closed ? 'popup_from_site_checkout' : 'manual_from_site_checkout',
         })
         if (paymentPopup && !paymentPopup.closed) {
@@ -661,5 +661,6 @@
       }
     })
   </script>
+  <script src="/polar-checkout-fallback.js" defer></script>
 </body>
 </html>

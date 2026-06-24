@@ -7,8 +7,8 @@ command = "npm run build:worker"
 
 [vars]
 APP_ORIGIN = "https://dexter.mom"
-PAYMENT_PROVIDER = "creem"
-CREEM_ENV = "live"
+PAYMENT_PROVIDER = "polar"
+POLAR_ENV = "live"
 
 [assets]
 directory = "."
